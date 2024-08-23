@@ -42,8 +42,8 @@ function App() {
       }
 
       audio.currentTime = 0; // Reset playback time
-      audio.play().catch(error => {
-        console.error("Error playing sound:", error);
+      audio.play().catch((error) => {
+        console.error('Error playing sound:', error);
       });
 
       setCurrentlyPlayingAudio(audio);
@@ -52,7 +52,7 @@ function App() {
   };
 
   const handleKeyPress = (event) => {
-    const pad = currentBank.find(d => d.key === event.key.toUpperCase());
+    const pad = currentBank.find((d) => d.key === event.key.toUpperCase());
     if (pad) {
       playSound(pad.key, pad.id);
     }
@@ -66,14 +66,14 @@ function App() {
   }, [currentBank, powerOn]);
 
   const togglePower = () => {
-    setPowerOn(prev => !prev);
+    setPowerOn((prev) => !prev);
     if (powerOn) setDisplay('');
   };
 
   const toggleBank = () => {
-    setCurrentBank(prev => 
+    setCurrentBank((prev) => (
       prev === drumPadsBank1 ? drumPadsBank2 : drumPadsBank1
-    );
+    ));
     setDisplay('');
   };
 
@@ -81,22 +81,43 @@ function App() {
     <div id="drum-machine">
       <div id="display">{display}</div>
       <div className="drum-pads">
-        {currentBank.map(pad => (
+        {currentBank.map((pad) => (
           <div
             key={pad.id}
             className="drum-pad"
             id={pad.id}
             onClick={() => playSound(pad.key, pad.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                playSound(pad.key, pad.id);
+              }
+            }}
+            role="button"
+            tabIndex="0"
+            aria-label={pad.id}
           >
             {pad.key}
-            <audio className="clip" id={pad.key} src={pad.src}></audio>
+            <audio className="clip" id={pad.key} src={pad.src}>
+              <track kind="captions" srcLang="en" />
+            </audio>
           </div>
         ))}
       </div>
       <div className="controls">
         <div className="control">
           <span>Power</span>
-          <div className="toggle-switch" onClick={togglePower}>
+          <div
+            className="toggle-switch"
+            onClick={togglePower}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                togglePower();
+              }
+            }}
+            role="button"
+            tabIndex="0"
+            aria-label="Toggle power"
+          >
             {powerOn ? 'On' : 'Off'}
           </div>
         </div>
@@ -106,7 +127,18 @@ function App() {
         </div>
         <div className="control">
           <span>Bank</span>
-          <div className="toggle-switch" onClick={toggleBank}>
+          <div
+            className="toggle-switch"
+            onClick={toggleBank}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                toggleBank();
+              }
+            }}
+            role="button"
+            tabIndex="0"
+            aria-label="Toggle bank"
+          >
             {currentBank === drumPadsBank1 ? 'Bank 1' : 'Bank 2'}
           </div>
         </div>

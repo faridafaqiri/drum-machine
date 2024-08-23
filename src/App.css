@@ -1,14 +1,15 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-image: url(./music-notes-34645518_s.webp);
+  background-image: url('./music-notes-34645518_s.webp');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100dvh;
+  height: 100vh;
 }
 
 #drum-machine {
@@ -21,6 +22,9 @@ body {
   border: 4px solid #3a9238;
   background-color: #ea7d45;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  max-width: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
 }
 
 #display {
@@ -34,7 +38,6 @@ body {
   font-size: 1.2em;
   border-radius: 5px;
   font-weight: 600;
-
 }
 
 .drum-pads {
@@ -94,7 +97,7 @@ body {
   position: relative;
 }
 
-.toggle-switch:before {
+.toggle-switch::before {
   content: '';
   position: absolute;
   top: 2px;
@@ -104,4 +107,57 @@ body {
   background-color: #2196f3;
   border-radius: 50%;
   transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  #drum-machine {
+    grid-template-areas:
+      "pads"
+      "display"
+      "controls";
+    grid-template-columns: 1fr;
+  }
+
+  .drum-pad {
+    width: 80px;
+    height: 80px;
+    font-size: 0.9em;
+  }
+
+  #display {
+    font-size: 1em;
+    padding: 8px;
+  }
+
+  .controls {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drum-pad {
+    width: 60px;
+    height: 60px;
+    font-size: 0.8em;
+  }
+
+  #display {
+    font-size: 0.9em;
+    padding: 6px;
+  }
+
+  .control {
+    font-size: 0.9em;
+  }
+
+  .toggle-switch {
+    width: 40px;
+    height: 15px;
+  }
+
+  .toggle-switch::before {
+    width: 12px;
+    height: 12px;
+  }
 }
