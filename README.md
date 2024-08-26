@@ -15,6 +15,8 @@ Check out the live demo [here](./Capture.JPG).
 
 ## 🌐 Live link
 
+https://deploy-preview-1--delicate-malasada-f6198f.netlify.app/
+
 ## 🛠️ Getting Started
 
 To get started with this project, follow these steps:
