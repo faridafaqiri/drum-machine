@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 const drumPadsBank1 = [
@@ -31,7 +31,7 @@ function App() {
   const [currentBank, setCurrentBank] = useState(drumPadsBank1);
   const [currentlyPlayingAudio, setCurrentlyPlayingAudio] = useState(null);
 
-  const playSound = (key, id) => {
+  const playSound = useCallback((key, id) => {
     if (!powerOn) return; // Do nothing if power is off
 
     const audio = document.getElementById(key);
@@ -43,27 +43,28 @@ function App() {
 
       audio.currentTime = 0; // Reset playback time
       audio.play().catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Error playing sound:', error);
       });
 
       setCurrentlyPlayingAudio(audio);
       setDisplay(id);
     }
-  };
+  }, [currentlyPlayingAudio, powerOn]);
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = useCallback((event) => {
     const pad = currentBank.find((d) => d.key === event.key.toUpperCase());
     if (pad) {
       playSound(pad.key, pad.id);
     }
-  };
+  }, [currentBank, playSound]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [currentBank, powerOn]);
+  }, [handleKeyPress]);
 
   const togglePower = () => {
     setPowerOn((prev) => !prev);
